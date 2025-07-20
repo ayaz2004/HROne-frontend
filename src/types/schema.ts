@@ -22,10 +22,6 @@ export const getDefaultValue = (type: FieldType, key?: string): unknown => {
         if (lowerKey.includes('name')) return 'John Doe';
         if (lowerKey.includes('email')) return 'john.doe@example.com';
         if (lowerKey.includes('city')) return 'New York';
-        if (lowerKey.includes('street')) return '123 Main Street';
-        if (lowerKey.includes('phone')) return '+1-555-0123';
-        if (lowerKey.includes('address')) return '123 Main Street';
-        if (lowerKey.includes('description')) return 'This is a sample description';
         if (lowerKey.includes('title')) return 'Sample Title';
       }
       return 'sample text';
@@ -33,11 +29,8 @@ export const getDefaultValue = (type: FieldType, key?: string): unknown => {
       if (key) {
         const lowerKey = key.toLowerCase();
         if (lowerKey.includes('age')) return 25;
-        if (lowerKey.includes('price') || lowerKey.includes('cost')) return 99.99;
-        if (lowerKey.includes('lat') || lowerKey.includes('latitude')) return 40.7128;
-        if (lowerKey.includes('lng') || lowerKey.includes('longitude')) return -74.0060;
+        if (lowerKey.includes('price')) return 99.99;
         if (lowerKey.includes('id')) return 12345;
-        if (lowerKey.includes('count') || lowerKey.includes('quantity')) return 10;
       }
       return 42;
     case 'nested':

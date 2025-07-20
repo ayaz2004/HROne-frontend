@@ -58,8 +58,8 @@ export const JsonSchemaBuilder: React.FC = () => {
     setFields(prev => deleteFieldRecursive(prev));
   }, []);
 
-  const addSampleData = useCallback(() => {
-    const sampleFields: SchemaField[] = [
+  const addUserProfileSample = useCallback(() => {
+    const userSample: SchemaField[] = [
       {
         id: generateId(),
         key: 'user',
@@ -75,56 +75,80 @@ export const JsonSchemaBuilder: React.FC = () => {
             id: generateId(),
             key: 'email',
             type: 'string',
-            value: 'john.doe@example.com'
+            value: 'john@example.com'
           },
           {
             id: generateId(),
             key: 'age',
             type: 'number',
             value: '25'
-          },
-          {
-            id: generateId(),
-            key: 'address',
-            type: 'nested',
-            children: [
-              {
-                id: generateId(),
-                key: 'street',
-                type: 'string',
-                value: '123 Main Street'
-              },
-              {
-                id: generateId(),
-                key: 'city',
-                type: 'string',
-                value: 'New York'
-              },
-              {
-                id: generateId(),
-                key: 'coordinates',
-                type: 'nested',
-                children: [
-                  {
-                    id: generateId(),
-                    key: 'lat',
-                    type: 'number',
-                    value: '40.7128'
-                  },
-                  {
-                    id: generateId(),
-                    key: 'lng',
-                    type: 'number',
-                    value: '-74.0060'
-                  }
-                ]
-              }
-            ]
           }
         ]
       }
     ];
-    setFields(sampleFields);
+    setFields(userSample);
+  }, []);
+
+  const addProductSample = useCallback(() => {
+    const productSample: SchemaField[] = [
+      {
+        id: generateId(),
+        key: 'product',
+        type: 'nested',
+        children: [
+          {
+            id: generateId(),
+            key: 'title',
+            type: 'string',
+            value: 'Product Name'
+          },
+          {
+            id: generateId(),
+            key: 'price',
+            type: 'number',
+            value: '99.99'
+          },
+          {
+            id: generateId(),
+            key: 'category',
+            type: 'string',
+            value: 'Electronics'
+          }
+        ]
+      }
+    ];
+    setFields(productSample);
+  }, []);
+
+  const addCompanySample = useCallback(() => {
+    const companySample: SchemaField[] = [
+      {
+        id: generateId(),
+        key: 'company',
+        type: 'nested',
+        children: [
+          {
+            id: generateId(),
+            key: 'name',
+            type: 'string',
+            value: 'Tech Solutions Inc.'
+          },
+          {
+            id: generateId(),
+            key: 'founded',
+            type: 'number',
+            value: '2010'
+          },
+          {
+            id: generateId(),
+            key: 'employees',
+            type: 'number',
+            value: '150'
+          }
+        ]
+      }
+    ];
+    setFields(companySample);
   }, []);
 
   const clearFields = useCallback(() => {
@@ -191,9 +215,6 @@ export const JsonSchemaBuilder: React.FC = () => {
                     Clear All
                   </Button>
                 )}
-                <Button onClick={addSampleData} variant="secondary">
-                  Load Sample
-                </Button>
                 <Button onClick={addField}>
                   <Plus style={{ width: 16, height: 16 }} />
                   Add Field
@@ -203,27 +224,8 @@ export const JsonSchemaBuilder: React.FC = () => {
 
             {fields.length === 0 ? (
               <div className="empty-state">
-                <p style={{ fontSize: '18px', marginBottom: '16px' }}>No fields added yet</p>
-                <p style={{ marginBottom: '20px' }}>Click "Add Field" to start building your schema</p>
-                
-                <div style={{ 
-                  background: '#f0f9ff', 
-                  border: '1px solid #bae6fd', 
-                  borderRadius: '8px', 
-                  padding: '16px', 
-                  textAlign: 'left',
-                  maxWidth: '500px',
-                  margin: '0 auto'
-                }}>
-                  <h4 style={{ color: '#0369a1', marginBottom: '8px' }}>💡 Try building a nested structure:</h4>
-                  <ol style={{ color: '#075985', lineHeight: '1.6', paddingLeft: '20px' }}>
-                    <li>Add a field and name it "user"</li>
-                    <li>Change its type to "Nested"</li>
-                    <li>Click "Add Nested" to add child fields</li>
-                    <li>Add fields like "name", "email", "address"</li>
-                    <li>Make "address" nested too for recursive nesting!</li>
-                  </ol>
-                </div>
+                <p>No fields added yet</p>
+                <p>Click "Add Field" to start building your schema</p>
               </div>
             ) : (
               <div className="fields-container">
@@ -293,13 +295,8 @@ export const JsonSchemaBuilder: React.FC = () => {
                   </div>
                   <div className="code-block">
                     {fields.length === 0 ? (
-                      <div style={{ 
-                        color: '#94a3b8', 
-                        fontStyle: 'italic', 
-                        textAlign: 'center', 
-                        padding: '20px' 
-                      }}>
-                        No fields added yet. Add some fields to see the JSON schema.
+                      <div style={{ color: '#94a3b8', fontStyle: 'italic', textAlign: 'center', padding: '20px' }}>
+                        No fields added yet.
                       </div>
                     ) : (
                       formatJsonOutput(jsonSchema)
@@ -342,13 +339,8 @@ export const JsonSchemaBuilder: React.FC = () => {
                   </div>
                   <div className="code-block">
                     {fields.length === 0 ? (
-                      <div style={{ 
-                        color: '#94a3b8', 
-                        fontStyle: 'italic', 
-                        textAlign: 'center', 
-                        padding: '20px' 
-                      }}>
-                        No fields added yet. Add some fields to see the sample data.
+                      <div style={{ color: '#94a3b8', fontStyle: 'italic', textAlign: 'center', padding: '20px' }}>
+                        No fields added yet.
                       </div>
                     ) : (
                       formatJsonOutput(sampleData)
@@ -357,6 +349,49 @@ export const JsonSchemaBuilder: React.FC = () => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Sample Data Section */}
+      <div style={{ 
+        marginTop: '32px', 
+        padding: '24px', 
+        background: 'white', 
+        borderRadius: '16px', 
+        border: '1px solid #e5e7eb',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+      }}>
+        <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '24px', color: '#374151', textAlign: 'center' }}>
+          Quick Start Templates
+        </h3>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+          <div style={{ padding: '20px', border: '1px solid #e5e7eb', borderRadius: '12px', background: '#fafbfc' }}>
+            <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>
+              👤 User Profile
+            </h4>
+            <Button onClick={addUserProfileSample} variant="primary" size="sm" style={{ width: '100%' }}>
+              Load User Schema
+            </Button>
+          </div>
+
+          <div style={{ padding: '20px', border: '1px solid #e5e7eb', borderRadius: '12px', background: '#fafbfc' }}>
+            <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>
+              🛍️ Product Catalog
+            </h4>
+            <Button onClick={addProductSample} variant="primary" size="sm" style={{ width: '100%' }}>
+              Load Product Schema
+            </Button>
+          </div>
+
+          <div style={{ padding: '20px', border: '1px solid #e5e7eb', borderRadius: '12px', background: '#fafbfc' }}>
+            <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>
+              🏢 Company Data
+            </h4>
+            <Button onClick={addCompanySample} variant="primary" size="sm" style={{ width: '100%' }}>
+              Load Company Schema
+            </Button>
           </div>
         </div>
       </div>
