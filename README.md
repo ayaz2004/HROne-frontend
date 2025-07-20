@@ -77,7 +77,7 @@ Copy your schema to clipboard or download as a `.json` file. Ready to use in you
 ## 🎨 Features Showcase
 
 ### 🔥 Complete Interface Overview
-![Full Interface](./screenshots/main-interface.png)
+![Full Interface](main-interface.png)
 *The complete JSON Schema Builder showing all features in action*
 
 ### Real-time Schema Generation
