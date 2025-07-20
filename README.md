@@ -6,8 +6,6 @@ Ever found yourself staring at a blank screen, trying to remember JSON schema sy
 
 This tool lets you build JSON schemas visually with a clean, modern interface. Click, type, and watch your schema come to life in real-time.
 
-![JSON Schema Builder Screenshot](./screenshots/main-interface.png)
-
 *👆 Beautiful interface showing schema building (left), generated JSON (right), and quick templates (bottom)*
 
 ## ✨ What Makes This Special?
