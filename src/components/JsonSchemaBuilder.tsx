@@ -3,7 +3,7 @@ import { Plus, Copy, Download, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SchemaFieldRow } from '@/components/SchemaFieldRow';
 import type { SchemaField } from '@/types/schema';
-import { generateJsonSchema, generateSampleData } from '@/types/schema';
+import { generateJsonSchema, generateSampleData, formatJsonOutput } from '@/types/schema';
 
 const generateId = () => Math.random().toString(36).substr(2, 9);
 
@@ -16,6 +16,7 @@ export const JsonSchemaBuilder: React.FC = () => {
     id: generateId(),
     key: '',
     type: 'string',
+    value: '',
   }), []);
 
   const addField = useCallback(() => {
@@ -67,17 +68,20 @@ export const JsonSchemaBuilder: React.FC = () => {
           {
             id: generateId(),
             key: 'name',
-            type: 'string'
+            type: 'string',
+            value: 'John Doe'
           },
           {
             id: generateId(),
             key: 'email',
-            type: 'string'
+            type: 'string',
+            value: 'john.doe@example.com'
           },
           {
             id: generateId(),
             key: 'age',
-            type: 'number'
+            type: 'number',
+            value: '25'
           },
           {
             id: generateId(),
@@ -87,12 +91,14 @@ export const JsonSchemaBuilder: React.FC = () => {
               {
                 id: generateId(),
                 key: 'street',
-                type: 'string'
+                type: 'string',
+                value: '123 Main Street'
               },
               {
                 id: generateId(),
                 key: 'city',
-                type: 'string'
+                type: 'string',
+                value: 'New York'
               },
               {
                 id: generateId(),
@@ -102,12 +108,14 @@ export const JsonSchemaBuilder: React.FC = () => {
                   {
                     id: generateId(),
                     key: 'lat',
-                    type: 'number'
+                    type: 'number',
+                    value: '40.7128'
                   },
                   {
                     id: generateId(),
                     key: 'lng',
-                    type: 'number'
+                    type: 'number',
+                    value: '-74.0060'
                   }
                 ]
               }
@@ -258,7 +266,7 @@ export const JsonSchemaBuilder: React.FC = () => {
                     <div className="code-actions">
                       <button
                         className="copy-button"
-                        onClick={() => copyToClipboard(JSON.stringify(jsonSchema, null, 2), 'schema')}
+                        onClick={() => copyToClipboard(formatJsonOutput(jsonSchema), 'schema')}
                         disabled={fields.length === 0}
                       >
                         {copyStatus.schema === 'copied' ? (
@@ -275,7 +283,7 @@ export const JsonSchemaBuilder: React.FC = () => {
                       </button>
                       <button
                         className="save-button"
-                        onClick={() => saveAsFile(JSON.stringify(jsonSchema, null, 2), 'schema.json')}
+                        onClick={() => saveAsFile(formatJsonOutput(jsonSchema), 'schema.json')}
                         disabled={fields.length === 0}
                       >
                         <Download style={{ width: 14, height: 14 }} />
@@ -294,7 +302,7 @@ export const JsonSchemaBuilder: React.FC = () => {
                         No fields added yet. Add some fields to see the JSON schema.
                       </div>
                     ) : (
-                      JSON.stringify(jsonSchema, null, 2)
+                      formatJsonOutput(jsonSchema)
                     )}
                   </div>
                 </div>
@@ -307,7 +315,7 @@ export const JsonSchemaBuilder: React.FC = () => {
                     <div className="code-actions">
                       <button
                         className="copy-button"
-                        onClick={() => copyToClipboard(JSON.stringify(sampleData, null, 2), 'sample')}
+                        onClick={() => copyToClipboard(formatJsonOutput(sampleData), 'sample')}
                         disabled={fields.length === 0}
                       >
                         {copyStatus.sample === 'copied' ? (
@@ -324,7 +332,7 @@ export const JsonSchemaBuilder: React.FC = () => {
                       </button>
                       <button
                         className="save-button"
-                        onClick={() => saveAsFile(JSON.stringify(sampleData, null, 2), 'sample-data.json')}
+                        onClick={() => saveAsFile(formatJsonOutput(sampleData), 'sample-data.json')}
                         disabled={fields.length === 0}
                       >
                         <Download style={{ width: 14, height: 14 }} />
@@ -343,7 +351,7 @@ export const JsonSchemaBuilder: React.FC = () => {
                         No fields added yet. Add some fields to see the sample data.
                       </div>
                     ) : (
-                      JSON.stringify(sampleData, null, 2)
+                      formatJsonOutput(sampleData)
                     )}
                   </div>
                 </div>

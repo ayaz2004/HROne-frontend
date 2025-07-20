@@ -30,12 +30,21 @@ export const SchemaFieldRow: React.FC<SchemaFieldRowProps> = ({
     
     if (newType === 'nested' && !field.children) {
       updates.children = [];
+      updates.value = undefined; // Clear value for nested fields
     }
     else if (newType !== 'nested') {
       updates.children = undefined;
+      // Keep existing value or set empty string if no value exists
+      if (field.value === undefined) {
+        updates.value = '';
+      }
     }
     
     onUpdateField(field.id, updates);
+  };
+
+  const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onUpdateField(field.id, { value: e.target.value });
   };
 
   const containerClass = depth > 0 ? 'nested-field' : '';
@@ -56,6 +65,16 @@ export const SchemaFieldRow: React.FC<SchemaFieldRowProps> = ({
           <option value="number">Number</option>
           <option value="nested">Nested</option>
         </Select>
+        
+        {field.type !== 'nested' && (
+          <Input
+            type={field.type === 'number' ? 'number' : 'text'}
+            value={field.value || ''}
+            onChange={handleValueChange}
+            placeholder={field.type === 'number' ? 'Enter number' : 'Enter value'}
+            style={{ flex: 1 }}
+          />
+        )}
         
         {field.type === 'nested' && (
           <Button

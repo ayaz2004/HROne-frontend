@@ -4,6 +4,7 @@ export interface SchemaField {
   id: string;
   key: string;
   type: FieldType;
+  value?: string;
   children?: SchemaField[];
 }
 
@@ -59,9 +60,7 @@ export const generateJsonSchema = (fields: SchemaField[]): JsonSchema => {
       required.push(field.key);
     } else if (field.type !== 'nested') {
       properties[field.key] = {
-        type: field.type === 'number' ? 'number' : 'string',
-        default: getDefaultValue(field.type, field.key),
-        description: `${field.key} field of type ${field.type}`
+        type: field.type === 'number' ? 'number' : 'string'
       };
       required.push(field.key);
     }
@@ -88,9 +87,23 @@ export const generateSampleData = (fields: SchemaField[]): Record<string, unknow
     if (field.type === 'nested' && field.children && field.children.length > 0) {
       data[field.key] = generateSampleData(field.children);
     } else if (field.type !== 'nested') {
-      data[field.key] = getDefaultValue(field.type, field.key);
+      // Use custom value if provided, otherwise use default
+      if (field.value !== undefined && field.value !== '') {
+        if (field.type === 'number') {
+          const numValue = parseFloat(field.value);
+          data[field.key] = isNaN(numValue) ? 0 : numValue;
+        } else {
+          data[field.key] = field.value;
+        }
+      } else {
+        data[field.key] = getDefaultValue(field.type, field.key);
+      }
     }
   });
   
   return data;
+};
+
+export const formatJsonOutput = (obj: unknown): string => {
+  return JSON.stringify(obj, null, 2);
 };
